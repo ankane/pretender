@@ -41,7 +41,7 @@ true_user
 impersonate_user(user)
 # allows you to login as another user
 
-unimpersonate_user
+stop_impersonating_user
 # become yourself again
   ```
 
@@ -62,7 +62,7 @@ Now we need to setup a way to login as another user.  **Pretender makes no assum
 
 ```ruby
 class Admin::UsersController < ApplicationController
-  before_filter :require_admin, :except => [:unimpersonate]
+  before_filter :require_admin, :except => [:stop_impersonating]
 
   def impersonate
     user = User.find(params[:id])
@@ -72,8 +72,8 @@ class Admin::UsersController < ApplicationController
 
   # do not require admin for this method if access control
   # is performed on the current_user instead of true_user
-  def unimpersonate
-    unimpersonate_user
+  def stop_impersonating
+    stop_impersonating_user
     redirect_to admin_path
   end
 end
@@ -88,7 +88,7 @@ You may want to make it obvious to an admin when he / she is logged in as anothe
 - if current_user != true_user
   .alert
     You (#{true_user.name}) are logged in as #{current_user.name}
-    = link_to "Back to admin", unimpersonate_user_path
+    = link_to "Back to admin", stop_impersonating_user_path
 ```
 
 ### Audits
@@ -124,7 +124,7 @@ This creates three methods:
 ```ruby
 true_account
 impersonate_account
-unimpersonate_account
+stop_impersonating_account
 ```
 
 Also, authenticated_account is overridden with `EnterpriseAccount.where(:id => id).first`

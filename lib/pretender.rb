@@ -27,7 +27,7 @@ module Pretender
       session[session_key] = resource.id
     end
 
-    define_method :"unimpersonate_#{scope}" do
+    define_method :"stop_impersonating_#{scope}" do
       instance_variable_set(impersonated_var, nil)
       session[session_key] = nil
     end
