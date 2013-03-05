@@ -88,7 +88,7 @@ You may want to make it obvious to an admin when he / she is logged in as anothe
 - if current_user != true_user
   .alert
     You (#{true_user.name}) are logged in as #{current_user.name}
-    = link_to "Back to admin", unimpersonate_user_admin_path
+    = link_to "Back to admin", unimpersonate_user_path
 ```
 
 ### Audits
@@ -107,7 +107,7 @@ Pretender is super flexible.  You can change the names of methods and even imper
 # app/controllers/application_controller.rb
 impersonates :user,
              :method => :current_user,
-             :with => proc{|id| User.where(id: id).first }
+             :with => proc{|id| User.where(:id => id).first }
 ```
 
 Mold it to fit your application.
@@ -116,7 +116,7 @@ Mold it to fit your application.
 # app/controllers/application_controller.rb
 impersonates :account,
              :method => :authenticated_account,
-             :with => proc{|id| EnterpriseAccount.where(id: id).first }
+             :with => proc{|id| EnterpriseAccount.where(:id => id).first }
 ```
 
 This creates three methods:
@@ -127,6 +127,6 @@ impersonate_account
 unimpersonate_account
 ```
 
-Also, authenticated_account is overridden with `EnterpriseAccount.where(id: id).first`
+Also, authenticated_account is overridden with `EnterpriseAccount.where(:id => id).first`
 
 ### That's all folks!

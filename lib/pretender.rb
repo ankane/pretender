@@ -4,7 +4,7 @@ module Pretender
 
   def impersonates(scope = :user, opts = {})
     impersonated_method = opts[:method] || :"current_#{scope}"
-    impersonate_with = opts[:with] || proc{|id| scope.to_s.classify.constantize.where(id: id).first }
+    impersonate_with = opts[:with] || proc{|id| scope.to_s.classify.constantize.where(:id => id).first }
     true_method = :"true_#{scope}"
     session_key = :"impersonated_#{scope}_id"
     impersonated_var = :"@impersonated_#{scope}"
