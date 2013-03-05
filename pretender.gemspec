@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Pretender::VERSION
   spec.authors       = ["Andrew Kane"]
   spec.email         = ["acekane1@gmail.com"]
-  spec.description   = %q{Login as another user}
+  spec.description   = %q{Simple, powerful user impersonation for Rails}
   spec.summary       = %q{Easy to switch back and forth between roles, minimal code changes, and plays nicely with auditing tools}
   spec.homepage      = "http://ankane.github.com/pretender/"
   spec.license       = "MIT"
