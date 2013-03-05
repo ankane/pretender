@@ -12,7 +12,8 @@ What is the right way?
 
 Pretender is also flexible and lightweight - less than 40 lines of code :-)
 
-Pretender works with Rails 2.3 and above.
+Pretender works with Rails 2.3+ and almost any authentication system.
+(devise, authlogic, sorcery, and many more - it's agnostic)
 
 ## Get started
 
