@@ -105,14 +105,18 @@ Pretender is super flexible.  You can change the names of methods and even imper
 
 ```ruby
 # app/controllers/application_controller.rb
-impersonates :user, :method => :current_user, :with => proc{|id| User.where(id: id).first }
+impersonates :user,
+             :method => :current_user,
+             :with => proc{|id| User.where(id: id).first }
 ```
 
 Mold it to fit your application.
 
 ```ruby
 # app/controllers/application_controller.rb
-impersonates :account, :method => :authenticated_account, :with => proc{|id| EnterpriseAccount.where(id: id).first }
+impersonates :account,
+             :method => :authenticated_account,
+             :with => proc{|id| EnterpriseAccount.where(id: id).first }
 ```
 
 This creates three methods:
