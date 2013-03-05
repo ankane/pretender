@@ -1,12 +1,10 @@
 # Pretender
 
-As an admin, there are times you want to see exactly what another user sees or take action on behalf of a user.  Pretender provides the ability to login as another user **the right way**.
-
-What is the right way?
+As an admin, there are times you want to see exactly what another user sees or take action on behalf of a user.  Meet Pretender.
 
 - Easy to switch back and forth between roles
 - Minimal code changes
-- Plays nicely with auditing tools
+- Plays nicely with auditing tools - **this is crucial**
 
 [Rock on](http://www.youtube.com/watch?v=SBjQ9tuuTJQ) :boom:
 
