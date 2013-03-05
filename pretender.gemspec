@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["acekane1@gmail.com"]
   spec.description   = %q{The right way to login as another user}
   spec.summary       = %q{What is the right way? Easy to switch back and forth between roles, minimal code changes, and plays nicely with auditing tools}
-  spec.homepage      = "https://github.com/ankane/pretender"
+  spec.homepage      = "http://ankane.github.com/pretender/"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
