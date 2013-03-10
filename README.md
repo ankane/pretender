@@ -85,7 +85,7 @@ end
 Be sure to call `stop_impersonating_user` before the current user logs out.
 
 ```ruby
-class SessionsController < ActionController::Base
+class SessionsController < ApplicationController
   def logout
     # it's safe to call this regardless of whether the user is being impersonated
     stop_impersonating_user
