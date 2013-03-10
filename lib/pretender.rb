@@ -17,7 +17,10 @@ module Pretender
       if !instance_variable_get(impersonated_var)
         # only fetch impersonation if user is logged in and impersonation_id exists
         true_resource = send(true_method)
-        value = (true_resource && session[session_key] && impersonate_with.call(session[session_key])) || true_resource
+        if session[session_key] and !true_resource
+          raise "Security warning: Be sure to call stop_impersonating_#{scope} before logging out"
+        end
+        value = (session[session_key] && impersonate_with.call(session[session_key])) || true_resource
         instance_variable_set(impersonated_var, value) if value
       end
       instance_variable_get(impersonated_var)

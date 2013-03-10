@@ -59,7 +59,7 @@ current_user
 
 Now we need to setup a way to login as another user.  **Pretender makes no assumptions about how you want to do this**.  I like to add this to my admin dashboard.
 
-#### Sample Implementation
+### Sample Implementation
 
 ```ruby
 class Admin::UsersController < ApplicationController
@@ -80,9 +80,24 @@ class Admin::UsersController < ApplicationController
 end
 ```
 
+### Very Important!
+
+Be sure to call `stop_impersonating_user` before the current user logs out.
+
+```ruby
+class SessionsController < ActionController::Base
+  def logout
+    # it's safe to call this regardless of whether the user is being impersonated
+    stop_impersonating_user
+    # now, log out the user
+    # ...
+  end
+end
+```
+
 You may want to make it obvious to an admin when he / she is logged in as another user.  I like to add this to the application layout.
 
-#### Haml / Slim
+### Haml / Slim
 
 ```haml
 - # app/views/layouts/application.haml
