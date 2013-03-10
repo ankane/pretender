@@ -14,9 +14,10 @@ module Pretender
     helper_method true_method
 
     define_method impersonated_method do
-      # only try to fetch impersonation if impersonation_id exists
       if !instance_variable_get(impersonated_var)
-        value = (session[session_key] && impersonate_with.call(session[session_key])) || send(true_method)
+        # only fetch impersonation if user is logged in and impersonation_id exists
+        true_resource = send(true_method)
+        value = (true_resource && session[session_key] && impersonate_with.call(session[session_key])) || true_resource
         instance_variable_set(impersonated_var, value) if value
       end
       instance_variable_get(impersonated_var)
