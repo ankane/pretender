@@ -13,6 +13,8 @@ Pretender is also flexible and lightweight - less than 40 lines of code :-)
 Pretender works with Rails 2.3+ and almost any authentication system.
 (devise, authlogic, sorcery, and many more - it's agnostic)
 
+[Battle-tested at Instacart](https://www.instacart.com)
+
 ## Get started
 
 Add this line to your application's Gemfile:
