@@ -59,7 +59,7 @@ current_user
 
 Now we need to setup a way to login as another user.  **Pretender makes no assumptions about how you want to do this**.  I like to add this to my admin dashboard.
 
-### Sample Implementation
+## Sample Implementation
 
 ```ruby
 class Admin::UsersController < ApplicationController
@@ -80,11 +80,11 @@ class Admin::UsersController < ApplicationController
 end
 ```
 
-### Very Important!
+## Very Important!
 
 Be sure to call `stop_impersonating_user` before the current user signs out.
 
-#### Devise
+### Devise
 
 Assuming you have a `User` model, change your routes to:
 
@@ -92,7 +92,7 @@ Assuming you have a `User` model, change your routes to:
 devise_for :users, controllers: {sessions: "sessions"}
 ```
 
-Then create a SessionsController with:
+Then create a `SessionsController` with:
 
 ```ruby
 class SessionsController < Devise::SessionsController
@@ -103,7 +103,7 @@ class SessionsController < Devise::SessionsController
 end
 ```
 
-#### Other
+### Other
 
 ```ruby
 class SessionsController < ApplicationController
@@ -116,11 +116,11 @@ class SessionsController < ApplicationController
 end
 ```
 
-### Show Admins
+## Show Admins
 
 You may want to make it obvious to an admin when he / she is signed in as another user.  I like to add this to the application layout.
 
-#### Haml / Slim
+### Haml / Slim
 
 ```haml
 - # app/views/layouts/application.haml
@@ -130,7 +130,7 @@ You may want to make it obvious to an admin when he / she is signed in as anothe
     = link_to "Back to admin", stop_impersonating_user_path
 ```
 
-### Audits
+## Audits
 
 If you keep audit logs with a library like [audited](https://github.com/collectiveidea/audited), make sure it uses the **true user**.
 
@@ -138,7 +138,7 @@ If you keep audit logs with a library like [audited](https://github.com/collecti
 Audited.current_user_method = :true_user
 ```
 
-### Configuration
+## Configuration
 
 Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here's the default configuration.
 
