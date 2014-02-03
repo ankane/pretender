@@ -11,13 +11,13 @@ As an admin, there are times you want to see exactly what another user sees or t
 Pretender is also flexible and lightweight - less than 40 lines of code :-)
 
 Pretender works with Rails 2.3+ and almost any authentication system.
-(devise, authlogic, sorcery, and many more - it's agnostic)
+(devise, authlogic, sorcery, and many more - it’s agnostic)
 
 [Battle-tested at Instacart](https://www.instacart.com)
 
 ## Get started
 
-Add this line to your application's Gemfile:
+Add this line to your application’s Gemfile:
 
 ```ruby
 # Gemfile
@@ -140,7 +140,7 @@ Audited.current_user_method = :true_user
 
 ### Configuration
 
-Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here's the default configuration.
+Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here’s the default configuration.
 
 ```ruby
 # app/controllers/application_controller.rb
@@ -168,4 +168,13 @@ stop_impersonating_account
 
 Also, authenticated_account is overridden with `EnterpriseAccount.where(:id => id).first`
 
-### That's all folks!
+## Contributing
+
+Everyone is encouraged to help improve this project. Here are a few ways you can help:
+
+- [Report bugs](https://github.com/ankane/pretender/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/pretender/pulls)
+- Write, clarify, or fix documentation
+- Suggest or add new features
+
+That’s all folks!
