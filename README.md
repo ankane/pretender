@@ -86,7 +86,7 @@ You may want to make it obvious to an admin when he / she is signed in as anothe
 #### Haml / Slim
 
 ```haml
-- # app/views/layouts/application.haml
+- # app/views/layouts/application.html.haml
 - if current_user != true_user
   .alert
     You (#{true_user.name}) are signed in as #{current_user.name}
