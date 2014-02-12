@@ -63,7 +63,7 @@ Now we need to set up a way to login as another user.  **Pretender makes no assu
 
 ```ruby
 class Admin::UsersController < ApplicationController
-  before_filter :require_admin, :except => [:stop_impersonating]
+  before_filter :require_admin
 
   def impersonate
     user = User.find(params[:id])
@@ -71,48 +71,11 @@ class Admin::UsersController < ApplicationController
     redirect_to root_path
   end
 
-  # do not require admin for this method if access control
-  # is performed on the current_user instead of true_user
   def stop_impersonating
     stop_impersonating_user
-    redirect_to admin_path
+    redirect_to root_path
   end
-end
-```
 
-### Very Important!
-
-Be sure to call `stop_impersonating_user` before the current user signs out.
-
-#### Devise
-
-Assuming you have a `User` model, change your routes to:
-
-```ruby
-devise_for :users, controllers: {sessions: "sessions"}
-```
-
-Then create a `SessionsController` with:
-
-```ruby
-class SessionsController < Devise::SessionsController
-  def destroy
-    stop_impersonating_user
-    super
-  end
-end
-```
-
-#### Other
-
-```ruby
-class SessionsController < ApplicationController
-  def destroy
-    # it's safe to call this regardless of whether the user is being impersonated
-    stop_impersonating_user
-    # now, log out the user
-    # ...
-  end
 end
 ```
 
@@ -127,7 +90,7 @@ You may want to make it obvious to an admin when he / she is signed in as anothe
 - if current_user != true_user
   .alert
     You (#{true_user.name}) are signed in as #{current_user.name}
-    = link_to "Back to admin", stop_impersonating_user_path
+    = link_to "Back to admin", stop_impersonating_path
 ```
 
 ### Audits
