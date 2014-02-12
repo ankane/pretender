@@ -57,7 +57,7 @@ current_user
 
 **Note:** the name of this method is configurable (details at the end)
 
-Now we need to setup a way to login as another user.  **Pretender makes no assumptions about how you want to do this**.  I like to add this to my admin dashboard.
+Now we need to set up a way to login as another user.  **Pretender makes no assumptions about how you want to do this**.  I like to add this to my admin dashboard.
 
 ### Sample Implementation
 
