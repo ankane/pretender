@@ -1,6 +1,6 @@
 # Pretender
 
-As an admin, there are times you want to see exactly what another user sees or take action on behalf of a user.  Meet Pretender.
+As an admin, there are times you want to see exactly what another user sees.  Meet Pretender.
 
 - Easily to switch between users
 - Minimal code changes
@@ -22,7 +22,7 @@ Add this line to your application’s Gemfile:
 gem 'pretender'
 ```
 
-And add this one to your `ApplicationController`:
+And add this to your `ApplicationController`:
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -36,7 +36,7 @@ Sign in as another user with:
 impersonate_user(user)
 ```
 
-The `current_user` method now contains the impersonated user.
+The `current_user` method now returns the impersonated user.
 
 You can access the true user with:
 
@@ -75,7 +75,6 @@ end
 Make it obvious when someone is signed in as another user in your application layout.
 
 ```haml
-- # app/views/layouts/application.html.haml
 - if current_user != true_user
   .alert
     You (#{true_user.name}) are signed in as #{current_user.name}
