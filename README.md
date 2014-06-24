@@ -2,68 +2,59 @@
 
 As an admin, there are times you want to see exactly what another user sees or take action on behalf of a user.  Meet Pretender.
 
-- Easy to switch back and forth between roles
+- Easily to switch between users
 - Minimal code changes
-- Plays nicely with auditing tools - **this is crucial**
+- Plays nicely with auditing tools
 
 [Rock on](http://www.youtube.com/watch?v=SBjQ9tuuTJQ) :boom:
 
-Pretender is also flexible and lightweight - less than 40 lines of code :-)
+Pretender is flexible and lightweight - less than 40 lines of code :-)
 
-Pretender works with Rails 2.3+ and almost any authentication system.
-(devise, authlogic, sorcery, and many more - it’s agnostic)
+Works with Rails 2.3+ and any authentication system - [Devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), and [Sorcery](https://github.com/NoamB/sorcery) to name a few.
 
 [Battle-tested at Instacart](https://www.instacart.com)
 
-## Get started
+## Get Started
 
 Add this line to your application’s Gemfile:
 
 ```ruby
-# Gemfile
 gem 'pretender'
 ```
 
-And add this line to your ApplicationController:
+And add this one to your `ApplicationController`:
 
 ```ruby
-# app/controllers/application_controller.rb
 class ApplicationController < ActionController::Base
   impersonates :user
 end
 ```
 
-This adds three methods to your controllers:
+Sign in as another user with:
 
-```ruby
-true_user
-# returns authenticated user
-
+```
 impersonate_user(user)
-# allows you to login as another user
-
-stop_impersonating_user
-# become yourself again
-  ```
-
-And changes the behavior of another:
-
-```ruby
-current_user
-# now returns:
-# - if impersonating, the impersonated user
-# - otherwise, the true user
 ```
 
-**Note:** the name of this method is configurable (details at the end)
+The `current_user` method now contains the impersonated user.
 
-Now we need to set up a way to login as another user.  **Pretender makes no assumptions about how you want to do this**.  I like to add this to my admin dashboard.
+You can access the true user with:
 
-### Sample Implementation
+```
+true_user
+```
+
+And stop impersonating with:
+
+```ruby
+stop_impersonating_user
+```
+
+Add these methods to a controller.
 
 ```ruby
 class Admin::UsersController < ApplicationController
-  before_filter :require_admin
+  before_filter :require_admin!
 
   def impersonate
     user = User.find(params[:id])
@@ -81,9 +72,7 @@ end
 
 ### Show Admins
 
-You may want to make it obvious to an admin when he / she is signed in as another user.  I like to add this to the application layout.
-
-#### Haml / Slim
+Make it obvious when someone is signed in as another user in your application layout.
 
 ```haml
 - # app/views/layouts/application.html.haml
@@ -95,7 +84,7 @@ You may want to make it obvious to an admin when he / she is signed in as anothe
 
 ### Audits
 
-If you keep audit logs with a library like [audited](https://github.com/collectiveidea/audited), make sure it uses the **true user**.
+If you keep audit logs with a library like [Audited](https://github.com/collectiveidea/audited), make sure it uses the **true user**.
 
 ```ruby
 Audited.current_user_method = :true_user
@@ -129,8 +118,6 @@ impersonate_account
 stop_impersonating_account
 ```
 
-Also, authenticated_account is overridden with `EnterpriseAccount.where(:id => id).first`
-
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
@@ -139,5 +126,3 @@ Everyone is encouraged to help improve this project. Here are a few ways you can
 - Fix bugs and [submit pull requests](https://github.com/ankane/pretender/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
-
-That’s all folks!
