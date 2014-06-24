@@ -14,7 +14,7 @@ Works with Rails 2.3+ and any authentication system - [Devise](https://github.co
 
 [Battle-tested at Instacart](https://www.instacart.com)
 
-## Get Started
+## Installation
 
 Add this line to your application’s Gemfile:
 
@@ -29,6 +29,8 @@ class ApplicationController < ActionController::Base
   impersonates :user
 end
 ```
+
+## How It Works
 
 Sign in as another user with:
 
@@ -50,7 +52,7 @@ And stop impersonating with:
 stop_impersonating_user
 ```
 
-Add these methods to a controller.
+### Sample Implementation
 
 ```ruby
 class Admin::UsersController < ApplicationController
