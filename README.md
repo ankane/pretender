@@ -72,18 +72,16 @@ class Admin::UsersController < ApplicationController
 end
 ```
 
-### Show Admins
+Show when someone is signed in as another user in your application layout.
 
-Make it obvious when someone is signed in as another user in your application layout.
-
-```haml
-- if current_user != true_user
-  .alert
-    You (#{true_user.name}) are signed in as #{current_user.name}
-    = link_to "Back to admin", stop_impersonating_path
+```erb
+<% if current_user != true_user %>
+  You (<%= true_user.name %>) are signed in as <%= current_user.name %>
+  <%= link_to "Back to admin", stop_impersonating_path %>
+<% end %>
 ```
 
-### Audits
+## Audits
 
 If you keep audit logs with a library like [Audited](https://github.com/collectiveidea/audited), make sure it uses the **true user**.
 
@@ -91,7 +89,7 @@ If you keep audit logs with a library like [Audited](https://github.com/collecti
 Audited.current_user_method = :true_user
 ```
 
-### Configuration
+## Configuration
 
 Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here’s the default configuration.
 
