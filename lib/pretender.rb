@@ -10,7 +10,13 @@ module Pretender
     impersonated_var = :"@impersonated_#{scope}"
 
     # define methods
-    alias_method true_method, impersonated_method
+    if respond_to?(impersonated_method)
+      alias_method true_method, impersonated_method
+    else
+      define_method true_method do
+        ActionController::Base.instance_method(impersonated_method).bind(self).call
+      end
+    end
     helper_method true_method
 
     define_method impersonated_method do
@@ -18,7 +24,7 @@ module Pretender
         # only fetch impersonation if user is logged in and impersonation_id exists
         true_resource = send(true_method)
         if session[session_key] and !true_resource
-          raise "Security warning: Be sure to call stop_impersonating_#{scope} before logging out"
+          session[session_key] = nil
         end
         value = (session[session_key] && impersonate_with.call(session[session_key])) || true_resource
         instance_variable_set(impersonated_var, value) if value
