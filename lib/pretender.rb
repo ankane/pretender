@@ -1,10 +1,9 @@
 require "pretender/version"
 
 module Pretender
-
   def impersonates(scope = :user, opts = {})
     impersonated_method = opts[:method] || :"current_#{scope}"
-    impersonate_with = opts[:with] || proc{|id| scope.to_s.classify.constantize.where(:id => id).first }
+    impersonate_with = opts[:with] || proc { |id| scope.to_s.classify.constantize.where(:id => id).first }
     true_method = :"true_#{scope}"
     session_key = :"impersonated_#{scope}_id"
     impersonated_var = :"@impersonated_#{scope}"
@@ -20,10 +19,10 @@ module Pretender
     helper_method true_method
 
     define_method impersonated_method do
-      if !instance_variable_get(impersonated_var)
+      unless instance_variable_get(impersonated_var)
         # only fetch impersonation if user is logged in and impersonation_id exists
         true_resource = send(true_method)
-        if session[session_key] and !true_resource
+        if session[session_key] && !true_resource
           session[session_key] = nil
         end
         value = (session[session_key] && impersonate_with.call(session[session_key])) || true_resource
@@ -42,7 +41,6 @@ module Pretender
       session[session_key] = nil
     end
   end
-
 end
 
 ActionController::Base.send(:extend, Pretender) if defined?(ActionController::Base)
