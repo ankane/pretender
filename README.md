@@ -6,13 +6,13 @@ As an admin, there are times you want to see exactly what another user sees.  Me
 - Minimal code changes
 - Plays nicely with auditing tools
 
-[Rock on](http://www.youtube.com/watch?v=SBjQ9tuuTJQ) :boom:
+:boom: [Rock on](http://www.youtube.com/watch?v=SBjQ9tuuTJQ)
 
 Pretender is flexible and lightweight - less than 40 lines of code :-)
 
 Works with Rails 2.3+ and any authentication system - [Devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), and [Sorcery](https://github.com/NoamB/sorcery) to name a few.
 
-[Battle-tested at Instacart](https://www.instacart.com)
+:tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
 ## Installation
 
