@@ -7,7 +7,7 @@ module Pretender
     true_method = :"true_#{scope}"
     session_key = :"impersonated_#{scope}_id"
     impersonated_var = :"@impersonated_#{scope}"
-    parent_class_name = opts[:parent_class_name]
+    parent_class_name = opts[:parent_class_name] || ActionController::Base
 
     # define methods
     if respond_to?(impersonated_method)
