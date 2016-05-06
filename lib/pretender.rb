@@ -7,13 +7,14 @@ module Pretender
     true_method = :"true_#{scope}"
     session_key = :"impersonated_#{scope}_id"
     impersonated_var = :"@impersonated_#{scope}"
+    parent_class = opts[:parent_class] || ActionController::Base
 
     # define methods
     if respond_to?(impersonated_method)
       alias_method true_method, impersonated_method
     else
       define_method true_method do
-        ActionController::Base.instance_method(impersonated_method).bind(self).call
+        parent_class.instance_method(impersonated_method).bind(self).call
       end
     end
     helper_method true_method
@@ -43,4 +44,4 @@ module Pretender
   end
 end
 
-ActionController::Base.send(:extend, Pretender) if defined?(ActionController::Base)
+# ActionController::Base.send(:extend, Pretender) if defined?(ActionController::Base)
