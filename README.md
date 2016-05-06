@@ -95,7 +95,10 @@ Pretender is super flexible.  You can change the names of methods and even imper
 
 ```ruby
 # app/controllers/application_controller.rb
+
+extend Pretender
 impersonates :user,
+             :parent_class_name => ActionController::API, # default ActionController::Base
              :method => :current_user,
              :with => proc{|id| User.where(:id => id).first }
 ```
@@ -104,7 +107,9 @@ Mold it to fit your application.
 
 ```ruby
 # app/controllers/application_controller.rb
+extend Pretender
 impersonates :account,
+             :parent_class_name => ActionController::API, # default ActionController::Base
              :method => :authenticated_account,
              :with => proc{|id| EnterpriseAccount.where(:id => id).first }
 ```
