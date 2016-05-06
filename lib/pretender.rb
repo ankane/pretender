@@ -43,4 +43,4 @@ module Pretender
   end
 end
 
-ActionController::Base.send(:extend, Pretender) if defined?(ActionController::Base)
+# ActionController::Base.send(:extend, Pretender) if defined?(ActionController::Base)
