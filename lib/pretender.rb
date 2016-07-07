@@ -1,4 +1,5 @@
 require "pretender/version"
+require "action_controller"
 
 module Pretender
   def impersonates(scope = :user, opts = {})
@@ -43,4 +44,4 @@ module Pretender
   end
 end
 
-ActionController::Base.send(:extend, Pretender) if defined?(ActionController::Base)
+ActionController::Base.send(:extend, Pretender)
