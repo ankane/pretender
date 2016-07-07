@@ -30,8 +30,6 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-If `current_user` is defined in your `ApplicationController`, it must come **before** the `impersonates` method.
-
 ## How It Works
 
 Sign in as another user with:

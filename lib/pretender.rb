@@ -16,7 +16,7 @@ module Pretender
       alias_method true_method, impersonated_method
     else
       define_method true_method do
-        raise Pretender::Error, "Cannot find method: #{impersonated_method}" unless ActionController::Base.method_defined?(impersonated_method)
+        raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless ActionController::Base.method_defined?(impersonated_method)
         ActionController::Base.instance_method(impersonated_method).bind(self).call
       end
     end
