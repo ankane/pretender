@@ -2,6 +2,8 @@ require "pretender/version"
 require "action_controller"
 
 module Pretender
+  class Error < StandardError; end
+
   def impersonates(scope = :user, opts = {})
     impersonated_method = opts[:method] || :"current_#{scope}"
     impersonate_with = opts[:with] || proc { |id| scope.to_s.classify.constantize.where(:id => id).first }
@@ -14,6 +16,7 @@ module Pretender
       alias_method true_method, impersonated_method
     else
       define_method true_method do
+        raise Pretender::Error, "Cannot find method: #{impersonated_method}" unless ActionController::Base.method_defined?(impersonated_method)
         ActionController::Base.instance_method(impersonated_method).bind(self).call
       end
     end
