@@ -1,5 +1,5 @@
 require "pretender/version"
-require "action_controller"
+require "active_support"
 
 module Pretender
   class Error < StandardError; end
@@ -47,4 +47,6 @@ module Pretender
   end
 end
 
-ActionController::Base.send(:extend, Pretender)
+ActiveSupport.on_load(:action_controller) do
+  ActionController::Base.send(:extend, Pretender)
+end

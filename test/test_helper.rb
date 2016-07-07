@@ -2,6 +2,7 @@ require "bundler/setup"
 Bundler.require(:default)
 require "minitest/autorun"
 require "minitest/pride"
+require "action_controller"
 
 User = Struct.new(:id) do
   def self.where(id: nil)
