@@ -70,7 +70,6 @@ class Admin::UsersController < ApplicationController
     stop_impersonating_user
     redirect_to root_path
   end
-
 end
 ```
 
@@ -96,19 +95,17 @@ Audited.current_user_method = :true_user
 Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here’s the default configuration.
 
 ```ruby
-# app/controllers/application_controller.rb
 impersonates :user,
-             :method => :current_user,
-             :with => proc{|id| User.where(:id => id).first }
+             method: :current_user,
+             with: -> (id) { User.find_by(id: id) }
 ```
 
 Mold it to fit your application.
 
 ```ruby
-# app/controllers/application_controller.rb
 impersonates :account,
-             :method => :authenticated_account,
-             :with => proc{|id| EnterpriseAccount.where(:id => id).first }
+             method: :authenticated_account,
+             with: -> (id) { EnterpriseAccount.find_by(id: id) }
 ```
 
 This creates three methods:
