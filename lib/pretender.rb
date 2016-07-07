@@ -9,7 +9,7 @@ module Pretender
     impersonated_var = :"@impersonated_#{scope}"
 
     # define methods
-    if respond_to?(impersonated_method)
+    if method_defined?(impersonated_method)
       alias_method true_method, impersonated_method
     else
       define_method true_method do
