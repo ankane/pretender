@@ -11,7 +11,6 @@ end
 module ActionController
   class Base
     attr_reader :session
-    attr_accessor :current_user
 
     def initialize
       @session = {}
@@ -22,8 +21,9 @@ module ActionController
   end
 end
 
-require_relative "../lib/pretender"
+require "pretender"
 
 class ApplicationController < ActionController::Base
+  attr_accessor :current_user
   impersonates :user
 end

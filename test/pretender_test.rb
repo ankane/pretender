@@ -1,4 +1,4 @@
-require_relative "helper"
+require_relative "test_helper"
 
 module TheTruth
   def test_original_state
