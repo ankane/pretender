@@ -54,9 +54,15 @@ stop_impersonating_user
 
 ### Sample Implementation
 
+Create a controller
+
 ```ruby
-class Admin::UsersController < ApplicationController
+class UsersController < ApplicationController
   before_filter :require_admin!
+
+  def index
+    @users = User.order(:id)
+  end
 
   def impersonate
     user = User.find(params[:id])
@@ -71,12 +77,31 @@ class Admin::UsersController < ApplicationController
 end
 ```
 
-Show when someone is signed in as another user in your application layout.
+Add routes
+
+```ruby
+resources :users, only: [:index] do
+  post :impersonate, on: :member
+  get :stop_impersonating, on: :collection
+end
+```
+
+Create an index view
+
+```erb
+<ul>
+  <% @users.each do |user| %>
+    <li>Sign in as <%= link_to user.name, impersonate_user_path(user), method: :post %></li>
+  <% end %>
+</ul>
+```
+
+And show when someone is signed in as another user in your application layout
 
 ```erb
 <% if current_user != true_user %>
   You (<%= true_user.name %>) are signed in as <%= current_user.name %>
-  <%= link_to "Back to admin", stop_impersonating_path %>
+  <%= link_to "Back to admin", stop_impersonating_users_path %>
 <% end %>
 ```
 
