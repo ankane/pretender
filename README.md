@@ -82,7 +82,7 @@ Add routes
 ```ruby
 resources :users, only: [:index] do
   post :impersonate, on: :member
-  get :stop_impersonating, on: :collection
+  post :stop_impersonating, on: :collection
 end
 ```
 
@@ -101,7 +101,7 @@ And show when someone is signed in as another user in your application layout
 ```erb
 <% if current_user != true_user %>
   You (<%= true_user.name %>) are signed in as <%= current_user.name %>
-  <%= link_to "Back to admin", stop_impersonating_users_path %>
+  <%= link_to "Back to admin", stop_impersonating_users_path, method: :post %>
 <% end %>
 ```
 
