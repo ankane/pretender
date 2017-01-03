@@ -1,6 +1,9 @@
 require "pretender/version"
+require "active_support"
 
 module Pretender
+  class Error < StandardError; end
+
   def impersonates(scope = :user, opts = {})
     impersonated_method = opts[:method] || :"current_#{scope}"
     impersonate_with = opts[:with] || proc { |id| scope.to_s.classify.constantize.where(:id => id).first }
@@ -10,11 +13,12 @@ module Pretender
     parent_class = opts[:parent_class] || ActionController::Base
 
     # define methods
-    if respond_to?(impersonated_method)
+    if method_defined?(impersonated_method)
       alias_method true_method, impersonated_method
     else
       define_method true_method do
-        parent_class.instance_method(impersonated_method).bind(self).call
+        raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless ActionController::Base.method_defined?(impersonated_method)
+        ActionController::Base.instance_method(impersonated_method).bind(self).call
       end
     end
     helper_method true_method
@@ -43,5 +47,3 @@ module Pretender
     end
   end
 end
-
-# ActionController::Base.send(:extend, Pretender) if defined?(ActionController::Base)

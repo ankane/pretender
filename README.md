@@ -8,9 +8,9 @@ As an admin, there are times you want to see exactly what another user sees.  Me
 
 :boom: [Rock on](http://www.youtube.com/watch?v=SBjQ9tuuTJQ)
 
-Pretender is flexible and lightweight - less than 40 lines of code :-)
+Pretender is flexible and lightweight - less than 60 lines of code :-)
 
-Works with Rails 2.3+ and any authentication system - [Devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), and [Sorcery](https://github.com/NoamB/sorcery) to name a few.
+Works with any authentication system - [Devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), and [Sorcery](https://github.com/NoamB/sorcery) to name a few.
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
@@ -54,9 +54,15 @@ stop_impersonating_user
 
 ### Sample Implementation
 
+Create a controller
+
 ```ruby
-class Admin::UsersController < ApplicationController
+class UsersController < ApplicationController
   before_filter :require_admin!
+
+  def index
+    @users = User.order(:id)
+  end
 
   def impersonate
     user = User.find(params[:id])
@@ -68,16 +74,34 @@ class Admin::UsersController < ApplicationController
     stop_impersonating_user
     redirect_to root_path
   end
-
 end
 ```
 
-Show when someone is signed in as another user in your application layout.
+Add routes
+
+```ruby
+resources :users, only: [:index] do
+  post :impersonate, on: :member
+  post :stop_impersonating, on: :collection
+end
+```
+
+Create an index view
+
+```erb
+<ul>
+  <% @users.each do |user| %>
+    <li>Sign in as <%= link_to user.name, impersonate_user_path(user), method: :post %></li>
+  <% end %>
+</ul>
+```
+
+And show when someone is signed in as another user in your application layout
 
 ```erb
 <% if current_user != true_user %>
   You (<%= true_user.name %>) are signed in as <%= current_user.name %>
-  <%= link_to "Back to admin", stop_impersonating_path %>
+  <%= link_to "Back to admin", stop_impersonating_users_path, method: :post %>
 <% end %>
 ```
 
@@ -95,24 +119,27 @@ Pretender is super flexible.  You can change the names of methods and even imper
 
 ```ruby
 # app/controllers/application_controller.rb
+class ApplicationController < ActionController::Base
 
-extend Pretender
-impersonates :user,
-             :parent_class => ActionController::API, # default ActionController::Base
-             :method => :current_user,
-             :with => proc{|id| User.where(:id => id).first }
+  extend Pretender
+  impersonates :user,
+               method: :current_user,
+               with: -> (id) { User.find_by(id: id) }
+end
 ```
 
-Mold it to fit your application.
+Mold it to fit your application or use it in APIs.
 
 ```ruby
-# app/controllers/application_controller.rb
+# app/controllers/api_controller.rb
+class ApiController < ActionController::API
 
-extend Pretender
-impersonates :account,
-             :parent_class => ActionController::API, # default ActionController::Base
-             :method => :authenticated_account,
-             :with => proc{|id| EnterpriseAccount.where(:id => id).first }
+  extend Pretender
+  impersonates :account,
+               parent_class: ActionController::API, # default ActionController::Base
+               method: :authenticated_account,
+               with: -> (id) { EnterpriseAccount.find_by(id: id) }
+end
 ```
 
 This creates three methods:
