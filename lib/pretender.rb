@@ -34,6 +34,7 @@ module Pretender
       end
       instance_variable_get(impersonated_var)
     end
+    helper_method impersonated_method
 
     define_method :"impersonate_#{scope}" do |resource|
       instance_variable_set(impersonated_var, resource)
