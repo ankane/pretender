@@ -1,6 +1,7 @@
-## 0.2.2 [unreleased]
+## 0.3.0 [unreleased]
 
 - Fixed compatibility with Clearance
+- Added support for Rails API
 - Added support for custom primary key
 
 ## 0.2.1

@@ -21,12 +21,12 @@ module Pretender
     else
       define_method true_method do
         # TODO handle private methods
-        # TODO handle methods defined on ApplicationController
-        raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless ActionController::Base.method_defined?(impersonated_method)
-        ActionController::Base.instance_method(impersonated_method).bind(self).call
+        superclass = self.class.superclass
+        raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless superclass.method_defined?(impersonated_method)
+        superclass.instance_method(impersonated_method).bind(self).call
       end
     end
-    helper_method true_method
+    helper_method(true_method) if respond_to?(:helper_method)
 
     define_method impersonated_method do
       unless instance_variable_get(impersonated_var)
@@ -54,5 +54,5 @@ module Pretender
 end
 
 ActiveSupport.on_load(:action_controller) do
-  ActionController::Base.send(:extend, Pretender)
+  extend Pretender
 end
