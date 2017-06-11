@@ -1,4 +1,4 @@
-## 0.3.0 [unreleased]
+## 0.3.0
 
 - Fixed compatibility with Clearance
 - Added support for Rails API
