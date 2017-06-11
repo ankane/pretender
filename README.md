@@ -118,17 +118,28 @@ Audited.current_user_method = :true_user
 Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here’s the default configuration.
 
 ```ruby
-impersonates :user,
-             method: :current_user,
-             with: -> (id) { User.find_by(id: id) }
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::Base
+
+  extend Pretender
+  impersonates :user,
+               method: :current_user,
+               with: -> (id) { User.find_by(id: id) }
+end
 ```
 
-Mold it to fit your application.
+Mold it to fit your application or use it in APIs.
 
 ```ruby
-impersonates :account,
-             method: :authenticated_account,
-             with: -> (id) { EnterpriseAccount.find_by(id: id) }
+# app/controllers/api_controller.rb
+class ApiController < ActionController::API
+
+  extend Pretender
+  impersonates :account,
+               parent_class: ActionController::API, # default ActionController::Base
+               method: :authenticated_account,
+               with: -> (id) { EnterpriseAccount.find_by(id: id) }
+end
 ```
 
 This creates three methods:

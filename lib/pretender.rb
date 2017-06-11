@@ -14,6 +14,7 @@ module Pretender
     true_method = :"true_#{scope}"
     session_key = :"impersonated_#{scope}_id"
     impersonated_var = :"@impersonated_#{scope}"
+    parent_class = opts[:parent_class] || ActionController::Base
 
     # define methods
     if method_defined?(impersonated_method) || private_method_defined?(impersonated_method)
@@ -51,8 +52,4 @@ module Pretender
       session[session_key] = nil
     end
   end
-end
-
-ActiveSupport.on_load(:action_controller) do
-  ActionController::Base.send(:extend, Pretender)
 end
