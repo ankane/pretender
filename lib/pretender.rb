@@ -20,11 +20,11 @@ module Pretender
       if method_defined?(impersonated_method) || private_method_defined?(impersonated_method)
         alias_method true_method, impersonated_method
       else
+        sc = superclass
         define_method true_method do
           # TODO handle private methods
-          superclass = self.class.superclass
-          raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless superclass.method_defined?(impersonated_method)
-          superclass.instance_method(impersonated_method).bind(self).call
+          raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless sc.method_defined?(impersonated_method)
+          sc.instance_method(impersonated_method).bind(self).call
         end
       end
       helper_method(true_method) if respond_to?(:helper_method)

@@ -1,3 +1,7 @@
+## 0.3.1 [unreleased]
+
+- Fixed `stack level too deep` error
+
 ## 0.3.0
 
 - Fixed compatibility with Clearance
