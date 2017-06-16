@@ -17,12 +17,15 @@ module Pretender
       impersonated_var = :"@impersonated_#{scope}"
 
       # define methods
-      if method_defined?(impersonated_method) || private_method_defined?(impersonated_method)
+      if method_defined?(impersonated_method) #|| private_method_defined?(impersonated_method)
+        puts "[PRETENDER] alias_method branch"
         alias_method true_method, impersonated_method
       else
+        puts "[PRETENDER] define_method branch"
         define_method true_method do
           # TODO handle private methods
           superclass = self.class.superclass
+          puts "[PRETENDER] #{superclass.inspect}"
           raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless superclass.method_defined?(impersonated_method)
           superclass.instance_method(impersonated_method).bind(self).call
         end
