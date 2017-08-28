@@ -5,6 +5,10 @@ require "minitest/pride"
 require "action_controller"
 
 User = Struct.new(:id) do
+  def self.find_by(id: nil)
+    new(id)
+  end
+
   def self.where(id: nil)
     [new(id)]
   end
