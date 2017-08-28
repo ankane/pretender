@@ -30,7 +30,7 @@ module Pretender
       helper_method(true_method) if respond_to?(:helper_method)
 
       define_method impersonated_method do
-        unless instance_variable_get(impersonated_var)
+        unless instance_variable_defined?(impersonated_var) && instance_variable_get(impersonated_var)
           # only fetch impersonation if user is logged in and impersonation_id exists
           true_resource = send(true_method)
           if session[session_key] && !true_resource
