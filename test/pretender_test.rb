@@ -58,3 +58,22 @@ class SuperPretenderTest < Minitest::Test
     end
   end
 end
+
+class ContextTest < MiniTest::Test
+  include TheTruth
+
+  def test_context
+    @controller.current_user = @impersonator
+    @controller.session[:impersonated_user_id] = @impersonated.id
+
+    assert_equal @impersonator, @controller.true_user
+    assert_equal @impersonated, @controller.current_user
+    assert_equal 'foo', @controller.context_test
+  end
+
+  def setup
+    @impersonator = User.new("impersonator")
+    @impersonated = User.new("impersonated")
+    @controller = ContextController.new
+  end
+end
