@@ -51,6 +51,11 @@ module Pretender
         instance_variable_set(impersonated_var, nil)
         session[session_key] = nil
       end
+
+      define_method :"impersonating_#{scope}?" do
+        send(true_method) != send(impersonated_method)
+      end
+      helper_method(:"impersonating_#{scope}?") if respond_to?(:helper_method)
     end
   end
 end

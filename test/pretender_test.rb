@@ -6,6 +6,7 @@ module TheTruth
 
     assert_equal @impersonator, @controller.true_user
     assert_equal @impersonator, @controller.current_user
+    refute @controller.impersonating_user?
   end
 
   def test_impersonates
@@ -14,6 +15,7 @@ module TheTruth
 
     assert_equal @impersonator, @controller.true_user
     assert_equal @impersonated, @controller.current_user
+    assert @controller.impersonating_user?
   end
 
   def test_impersonated_state
@@ -22,6 +24,7 @@ module TheTruth
 
     assert_equal @impersonator, @controller.true_user
     assert_equal @impersonated, @controller.current_user
+    assert @controller.impersonating_user?
   end
 
   def test_stops_impersonating
@@ -31,6 +34,7 @@ module TheTruth
 
     assert_equal @impersonator, @controller.true_user
     assert_equal @impersonator, @controller.current_user
+    refute @controller.impersonating_user?
   end
 end
 
