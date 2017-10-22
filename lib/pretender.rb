@@ -36,7 +36,7 @@ module Pretender
           if session[session_key] && !true_resource
             session[session_key] = nil
           end
-          value = (session[session_key] && impersonate_with.call(session[session_key])) || true_resource
+          value = (session[session_key] && self.instance_exec(session[session_key], &impersonate_with)) || true_resource
           instance_variable_set(impersonated_var, value) if value
         end
         instance_variable_get(impersonated_var)

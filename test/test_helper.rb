@@ -28,3 +28,11 @@ class ApplicationController < ActionController::Base
   attr_accessor :current_user
   impersonates :user
 end
+
+class ContextController < ActionController::Base
+  attr_accessor :current_user, :context_test
+  impersonates :user, with: -> (id) do
+    self.context_test = 'foo'
+    User.find_by(id: id)
+  end
+end
