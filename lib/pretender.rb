@@ -44,7 +44,7 @@ module Pretender
 
       define_method :"impersonate_#{scope}" do |resource|
         instance_variable_set(impersonated_var, resource)
-        session[session_key] = resource.id
+        session[session_key] = resource.id.to_s
       end
 
       define_method :"stop_impersonating_#{scope}" do
