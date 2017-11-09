@@ -1,6 +1,6 @@
 ## 0.3.2 [unreleased]
 
-- Better support Mongoid `BSON::ObjectId`
+- Support for Mongoid `BSON::ObjectId` out of the box
 
 ## 0.3.1
 
