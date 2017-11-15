@@ -58,7 +58,7 @@ Create a controller
 
 ```ruby
 class UsersController < ApplicationController
-  before_action :require_admin!
+  before_action :require_admin! # your authorization method
 
   def index
     @users = User.order(:id)
