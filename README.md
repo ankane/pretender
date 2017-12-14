@@ -10,7 +10,7 @@ As an admin, there are times you want to see exactly what another user sees.  Me
 
 Pretender is flexible and lightweight - less than 60 lines of code :-)
 
-Works with any authentication system - [Devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), and [Sorcery](https://github.com/NoamB/sorcery) to name a few.
+Works with any authentication system - [Devise](https://github.com/plataformatec/devise), [Authlogic](https://github.com/binarylogic/authlogic), and [Sorcery](https://github.com/Sorcery/sorcery) to name a few.
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
