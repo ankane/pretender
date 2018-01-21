@@ -15,6 +15,7 @@ module Pretender
       true_method = :"true_#{scope}"
       session_key = :"impersonated_#{scope}_id"
       impersonated_var = :"@impersonated_#{scope}"
+      stop_impersonating_method = :"stop_impersonating_#{scope}"
 
       # define methods
       if method_defined?(impersonated_method) || private_method_defined?(impersonated_method)
@@ -44,7 +45,7 @@ module Pretender
           else
             # TODO better message
             warn "[pretender] Session reset"
-            send(:"stop_impersonating_#{scope}")
+            send(stop_impersonating_method)
           end
         end
 
@@ -61,7 +62,7 @@ module Pretender
         session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
       end
 
-      define_method :"stop_impersonating_#{scope}" do
+      define_method stop_impersonating_method do
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
         session.delete(session_key)
       end
