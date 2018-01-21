@@ -30,18 +30,19 @@ module Pretender
       helper_method(true_method) if respond_to?(:helper_method)
 
       define_method impersonated_method do
-        unless instance_variable_defined?(impersonated_var) && instance_variable_get(impersonated_var)
-          if session[session_key]
-            # only fetch impersonation if user is logged in
-            if send(true_method)
-              value = impersonate_with.call(session[session_key])
-              instance_variable_set(impersonated_var, value) if value
-            else
-              session.delete(session_key)
-            end
+        impersonated_resource = instance_variable_get(impersonated_var) if instance_variable_defined?(impersonated_var)
+
+        if !impersonated_resource && session[session_key]
+          # only fetch impersonation if user is logged in
+          if send(true_method)
+            impersonated_resource = impersonate_with.call(session[session_key])
+            instance_variable_set(impersonated_var, impersonated_resource) if impersonated_resource
+          else
+            session.delete(session_key)
           end
         end
-        instance_variable_get(impersonated_var) || send(true_method)
+
+        impersonated_resource || send(true_method)
       end
 
       define_method :"impersonate_#{scope}" do |resource|
