@@ -44,7 +44,7 @@ module Pretender
             instance_variable_set(impersonated_var, impersonated_resource) if impersonated_resource
           else
             # TODO better message
-            warn "[pretender] Session reset"
+            warn "[pretender] Stopping impersonation due to safety check"
             send(stop_impersonating_method)
           end
         end
@@ -53,9 +53,8 @@ module Pretender
       end
 
       define_method :"impersonate_#{scope}" do |resource|
-        # TODO better messages
-        raise ArgumentError, "No resource provided" unless resource
-        raise Pretender::Error, "Not logged in" unless send(true_method)
+        raise ArgumentError, "No resource to impersonate" unless resource
+        raise Pretender::Error, "Must be logged in to impersonate" unless send(true_method)
 
         instance_variable_set(impersonated_var, resource)
         # use to_s for Mongoid for BSON::ObjectId
