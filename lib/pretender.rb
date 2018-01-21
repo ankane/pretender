@@ -34,6 +34,10 @@ module Pretender
 
         if !impersonated_resource && session[session_key]
           # only fetch impersonation if user is logged in
+          # this is a safety check (once per request) so
+          # if a user logs out without session being destroyed
+          # or stop_impersonating_user being called,
+          # we can reset the impersonation
           if send(true_method)
             impersonated_resource = impersonate_with.call(session[session_key])
             instance_variable_set(impersonated_var, impersonated_resource) if impersonated_resource
