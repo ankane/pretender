@@ -31,26 +31,30 @@ module Pretender
 
       define_method impersonated_method do
         unless instance_variable_defined?(impersonated_var) && instance_variable_get(impersonated_var)
-          # only fetch impersonation if user is logged in and impersonation_id exists
-          true_resource = send(true_method)
-          if session[session_key] && !true_resource
-            session[session_key] = nil
+          if session[session_key]
+            # only fetch impersonation if user is logged in
+            if send(true_method)
+              value = impersonate_with.call(session[session_key])
+              instance_variable_set(impersonated_var, value) if value
+            else
+              session.delete(session_key)
+            end
           end
-          value = session[session_key] && impersonate_with.call(session[session_key])
-          instance_variable_set(impersonated_var, value) if value
         end
         instance_variable_get(impersonated_var) || send(true_method)
       end
 
       define_method :"impersonate_#{scope}" do |resource|
+        raise ArgumentError, "No resource" unless resource
+
         instance_variable_set(impersonated_var, resource)
         # use to_s for Mongoid for BSON::ObjectId
         session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
       end
 
       define_method :"stop_impersonating_#{scope}" do
-        instance_variable_set(impersonated_var, nil)
-        session[session_key] = nil
+        remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
+        session.delete(session_key)
       end
     end
   end
