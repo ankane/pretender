@@ -1,4 +1,4 @@
-## 0.3.2 [unreleased]
+## 0.3.2
 
 - Support for Mongoid `BSON::ObjectId` out of the box
 - Fixed issue with impersonated resource caching
