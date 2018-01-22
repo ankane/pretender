@@ -8,14 +8,15 @@ Gem::Specification.new do |spec|
   spec.version       = Pretender::VERSION
   spec.authors       = ["Andrew Kane"]
   spec.email         = ["andrew@chartkick.com"]
-  spec.description   = "Simple, powerful user impersonation for Rails"
-  spec.summary       = "Easy to switch back and forth between roles, minimal code changes, and plays nicely with auditing tools"
+  spec.description   = "Log in as another user in Rails"
   spec.homepage      = "https://github.com/ankane/pretender"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split("\x0")
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
   spec.add_dependency "actionpack"
