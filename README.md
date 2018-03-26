@@ -6,7 +6,7 @@ As an admin, there are times you want to see exactly what another user sees.  Me
 - Minimal code changes
 - Plays nicely with auditing tools
 
-:boom: [Rock on](http://www.youtube.com/watch?v=SBjQ9tuuTJQ)
+:boom: [Rock on](https://www.youtube.com/watch?v=SBjQ9tuuTJQ)
 
 Pretender is flexible and lightweight - less than 60 lines of code :-)
 
