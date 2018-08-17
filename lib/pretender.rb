@@ -10,7 +10,7 @@ module Pretender
       impersonate_with = opts[:with] || proc { |id|
         klass = scope.to_s.classify.constantize
         primary_key = klass.respond_to?(:primary_key) ? klass.primary_key : :id
-        klass.find_by(primary_key => id)
+        klass.where(primary_key => id).limit(1).first
       }
       true_method = :"true_#{scope}"
       session_key = :"impersonated_#{scope}_id"
