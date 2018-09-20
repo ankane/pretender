@@ -113,6 +113,30 @@ If you keep audit logs with a library like [Audited](https://github.com/collecti
 Audited.current_user_method = :true_user
 ```
 
+## Action Cable [master]
+
+And add this to your `ApplicationCable`:
+
+```ruby
+module ApplicationCable
+  class Connection < ActionCable::Connection::Base
+    identified_by :current_user
+    impersonates :user
+
+    def connect
+      self.current_user = find_verified_user
+      reject_unauthorized_connection unless current_user
+    end
+
+    private
+
+    def find_verified_user
+      env["warden"].user # for Devise
+    end
+  end
+end
+```
+
 ## Configuration
 
 Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here’s the default configuration.

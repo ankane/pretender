@@ -33,14 +33,14 @@ module Pretender
       define_method impersonated_method do
         impersonated_resource = instance_variable_get(impersonated_var) if instance_variable_defined?(impersonated_var)
 
-        if !impersonated_resource && session[session_key]
+        if !impersonated_resource && request.session[session_key]
           # only fetch impersonation if user is logged in
           # this is a safety check (once per request) so
           # if a user logs out without session being destroyed
           # or stop_impersonating_user being called,
           # we can stop the impersonation
           if send(true_method)
-            impersonated_resource = impersonate_with.call(session[session_key])
+            impersonated_resource = impersonate_with.call(request.session[session_key])
             instance_variable_set(impersonated_var, impersonated_resource) if impersonated_resource
           else
             # TODO better message
@@ -55,6 +55,7 @@ module Pretender
       define_method :"impersonate_#{scope}" do |resource|
         raise ArgumentError, "No resource to impersonate" unless resource
         raise Pretender::Error, "Must be logged in to impersonate" unless send(true_method)
+        raise Pretender::Error, "Session not available" unless respond_to?(:session)
 
         instance_variable_set(impersonated_var, resource)
         # use to_s for Mongoid for BSON::ObjectId
@@ -62,6 +63,8 @@ module Pretender
       end
 
       define_method stop_impersonating_method do
+        raise Pretender::Error, "Session not available" unless respond_to?(:session)
+
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
         session.delete(session_key)
       end
@@ -71,4 +74,8 @@ end
 
 ActiveSupport.on_load(:action_controller) do
   extend Pretender::Methods
+end
+
+ActiveSupport.on_load(:action_cable) do
+  ActionCable::Connection::Base.extend Pretender::Methods
 end

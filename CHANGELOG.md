@@ -1,3 +1,7 @@
+## 0.3.3 [unreleased]
+
+- Added support for Action Cable
+
 ## 0.3.2
 
 - Support for Mongoid `BSON::ObjectId` out of the box
