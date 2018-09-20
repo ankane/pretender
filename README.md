@@ -1,6 +1,6 @@
 # Pretender
 
-As an admin, there are times you want to see exactly what another user sees.  Meet Pretender.
+As an admin, there are times you want to see exactly what another user sees. Meet Pretender.
 
 - Easily to switch between users
 - Minimal code changes
@@ -141,12 +141,12 @@ The `current_user` method now returns the impersonated user in channels.
 
 ## Configuration
 
-Pretender is super flexible.  You can change the names of methods and even impersonate multiple roles at the same time.  Here’s the default configuration.
+Pretender is super flexible. You can change the names of methods and even impersonate multiple roles at the same time. Here’s the default configuration.
 
 ```ruby
 impersonates :user,
              method: :current_user,
-             with: -> (id) { User.find_by(id: id) }
+             with: ->(id) { User.find_by(id: id) }
 ```
 
 Mold it to fit your application.
@@ -154,7 +154,7 @@ Mold it to fit your application.
 ```ruby
 impersonates :account,
              method: :authenticated_account,
-             with: -> (id) { EnterpriseAccount.find_by(id: id) }
+             with: ->(id) { EnterpriseAccount.find_by(id: id) }
 ```
 
 This creates three methods:
