@@ -120,7 +120,7 @@ And add this to your `ApplicationCable`:
 ```ruby
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
-    identified_by :current_user, :true_user
+    identified_by :current_user
     impersonates :user
 
     def connect
@@ -137,7 +137,7 @@ module ApplicationCable
 end
 ```
 
-You can now use `current_user` and `true_user` in channels.
+The `current_user` method now returns the impersonated user in channels.
 
 ## Configuration
 
