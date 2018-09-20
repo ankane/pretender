@@ -137,7 +137,7 @@ module ApplicationCable
 end
 ```
 
-You can now use `current_user` and `true_user`.
+You can now use `current_user` and `true_user` in channels.
 
 ## Configuration
 
