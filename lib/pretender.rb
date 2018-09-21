@@ -55,15 +55,18 @@ module Pretender
       define_method :"impersonate_#{scope}" do |resource|
         raise ArgumentError, "No resource to impersonate" unless resource
         raise Pretender::Error, "Must be logged in to impersonate" unless send(true_method)
+        raise Pretender::Error, "Session not available" unless respond_to?(:session)
 
         instance_variable_set(impersonated_var, resource)
         # use to_s for Mongoid for BSON::ObjectId
-        request.session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
+        session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
       end
 
       define_method stop_impersonating_method do
+        raise Pretender::Error, "Session not available" unless respond_to?(:session)
+
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
-        request.session.delete(session_key)
+        session.delete(session_key)
       end
     end
   end
