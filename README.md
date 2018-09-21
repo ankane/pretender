@@ -4,7 +4,7 @@ As an admin, there are times you want to see exactly what another user sees. Mee
 
 - Easily to switch between users
 - Minimal code changes
-- Plays nicely with auditing tools
+- Plays nicely with Action Cable and auditing tools
 
 :boom: [Rock on](https://www.youtube.com/watch?v=SBjQ9tuuTJQ)
 
@@ -113,7 +113,7 @@ If you keep audit logs with a library like [Audited](https://github.com/collecti
 Audited.current_user_method = :true_user
 ```
 
-## Action Cable [master]
+## Action Cable
 
 And add this to your `ApplicationCable::Connection`:
 
