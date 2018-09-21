@@ -115,7 +115,7 @@ Audited.current_user_method = :true_user
 
 ## Action Cable [master]
 
-And add this to your `ApplicationCable`:
+And add this to your `ApplicationCable::Connection`:
 
 ```ruby
 module ApplicationCable
