@@ -55,6 +55,7 @@ module Pretender
       define_method :"impersonate_#{scope}" do |resource|
         raise ArgumentError, "No resource to impersonate" unless resource
         raise Pretender::Error, "Must be logged in to impersonate" unless send(true_method)
+        # cannot set cookies in Action Cable
         raise Pretender::Error, "Session not available" unless respond_to?(:session)
 
         instance_variable_set(impersonated_var, resource)
@@ -63,6 +64,7 @@ module Pretender
       end
 
       define_method stop_impersonating_method do
+        # cannot set cookies in Action Cable
         raise Pretender::Error, "Session not available" unless respond_to?(:session)
 
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
