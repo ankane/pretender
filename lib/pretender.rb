@@ -60,7 +60,7 @@ module Pretender
 
         instance_variable_set(impersonated_var, resource)
         # use to_s for Mongoid for BSON::ObjectId
-        session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
+        request.session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
       end
 
       define_method stop_impersonating_method do
@@ -68,7 +68,7 @@ module Pretender
         raise Pretender::Error, "Session not available" unless respond_to?(:session)
 
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
-        session.delete(session_key)
+        request.session.delete(session_key)
       end
     end
   end
