@@ -73,6 +73,5 @@ ActiveSupport.on_load(:action_controller) do
   extend Pretender::Methods
 end
 
-ActiveSupport.on_load(:action_cable) do
-  ActionCable::Connection::Base.extend Pretender::Methods
-end
+# ActiveSupport.on_load(:action_cable) runs too late
+ActionCable::Connection::Base.extend(Pretender::Methods) if defined?(ActionCable)
