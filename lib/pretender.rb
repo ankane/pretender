@@ -73,5 +73,4 @@ ActiveSupport.on_load(:action_controller) do
   extend Pretender::Methods
 end
 
-# ActiveSupport.on_load(:action_cable) runs too late with Unicorn
-ActionCable::Connection::Base.extend(Pretender::Methods) if defined?(ActionCable)
+require "pretender/railtie" if defined?(Rails)
