@@ -1,4 +1,4 @@
-## 0.3.4 [unreleased]
+## 0.3.4
 
 - Fixed error with Action Cable and eager loading
 
