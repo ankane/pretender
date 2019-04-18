@@ -2,7 +2,7 @@
 
 As an admin, there are times you want to see exactly what another user sees. Meet Pretender.
 
-- Easily to switch between users
+- Easy to switch between users
 - Minimal code changes
 - Plays nicely with Action Cable and auditing tools
 
