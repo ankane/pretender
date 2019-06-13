@@ -1,60 +1,40 @@
 require_relative "test_helper"
 
-module TheTruth
-  def test_original_state
-    @controller.current_user = @impersonator
-
-    assert_equal @impersonator, @controller.true_user
-    assert_equal @impersonator, @controller.current_user
-  end
-
-  def test_impersonates
-    @controller.current_user = @impersonator
-    @controller.impersonate_user @impersonated
-
-    assert_equal @impersonator, @controller.true_user
-    assert_equal @impersonated, @controller.current_user
-  end
-
-  def test_impersonated_state
-    @controller.current_user = @impersonator
-    @controller.session[:impersonated_user_id] = @impersonated.id
-
-    assert_equal @impersonator, @controller.true_user
-    assert_equal @impersonated, @controller.current_user
-  end
-
-  def test_stops_impersonating
-    @controller.current_user = @impersonator
-    @controller.session[:impersonated_user_id] = @impersonated.id
-    @controller.stop_impersonating_user
-
-    assert_equal @impersonator, @controller.true_user
-    assert_equal @impersonator, @controller.current_user
-  end
-end
-
-class PretenderTest < Minitest::Test
-  include TheTruth
-
+class PretenderTest < ActionDispatch::IntegrationTest
   def setup
-    @impersonator = User.new("impersonator")
-    @impersonated = User.new("impersonated")
-    @controller = ApplicationController.new
+    User.delete_all
   end
-end
 
-class SuperPretenderTest < Minitest::Test
-  include TheTruth
+  def test_works
+    admin = User.create!
+    user = User.create!
 
-  def setup
-    @impersonator = User.new("impersonator")
-    @impersonated = User.new("impersonated")
-    @controller = ApplicationController.new
-    class << @controller
-      def current_user
-        super
-      end
-    end
+    get root_url
+    assert :success
+
+    assert_equal admin, current_user
+    assert_equal admin, true_user
+
+    post impersonate_url
+    assert :success
+
+    assert_equal user, current_user
+    assert_equal admin, true_user
+
+    post stop_impersonating_url
+    assert :success
+
+    assert_equal admin, current_user
+    assert_equal admin, true_user
+  end
+
+  private
+
+  def current_user
+    controller.current_user
+  end
+
+  def true_user
+    controller.true_user
   end
 end

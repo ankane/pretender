@@ -1,30 +1,12 @@
 require "bundler/setup"
+require "combustion"
 Bundler.require(:default)
 require "minitest/autorun"
 require "minitest/pride"
-require "action_controller"
 
-User = Struct.new(:id) do
-  def self.find_by(id: nil)
-    new(id)
+Combustion.path = "test/internal"
+Combustion.initialize! :all do
+  if ActiveRecord::VERSION::MAJOR < 6 && config.active_record.sqlite3.respond_to?(:represent_boolean_as_integer)
+    config.active_record.sqlite3.represent_boolean_as_integer = true
   end
-
-  def self.where(id: nil)
-    [new(id)]
-  end
-end
-
-module ActionController
-  class Base
-    attr_reader :session
-
-    def initialize
-      @session = {}
-    end
-  end
-end
-
-class ApplicationController < ActionController::Base
-  attr_accessor :current_user
-  impersonates :user
 end
