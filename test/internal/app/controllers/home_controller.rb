@@ -14,7 +14,7 @@ class HomeController < ActionController::Base
   end
 
   def current_user
-    @user ||= User.find_by!(name: "Admin")
+    @current_user ||= User.find_by!(name: "Admin")
   end
   impersonates :user
 end
