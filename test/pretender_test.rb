@@ -6,8 +6,8 @@ class PretenderTest < ActionDispatch::IntegrationTest
   end
 
   def test_works
-    admin = User.create!
-    user = User.create!
+    admin = User.create!(name: "Admin")
+    user = User.create!(name: "User")
 
     get root_url
     assert :success

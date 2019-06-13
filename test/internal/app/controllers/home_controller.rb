@@ -4,7 +4,7 @@ class HomeController < ActionController::Base
   end
 
   def impersonate
-    impersonate_user(User.last)
+    impersonate_user(User.find_by!(name: "User"))
     head :ok
   end
 
@@ -14,7 +14,7 @@ class HomeController < ActionController::Base
   end
 
   def current_user
-    @user ||= User.first
+    @user ||= User.find_by!(name: "Admin")
   end
   impersonates :user
 end
