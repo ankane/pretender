@@ -165,6 +165,10 @@ impersonate_account
 stop_impersonating_account
 ```
 
+## History
+
+View the [changelog](https://github.com/ankane/pretender/blob/master/CHANGELOG.md)
+
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
