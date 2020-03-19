@@ -14,6 +14,8 @@ Works with any authentication system - [Devise](https://github.com/plataformatec
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
+[![Build Status](https://travis-ci.org/ankane/pretender.svg?branch=master)](https://travis-ci.org/ankane/pretender)
+
 ## Installation
 
 Add this line to your application’s Gemfile:
