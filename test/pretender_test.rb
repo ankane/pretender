@@ -10,19 +10,19 @@ class PretenderTest < ActionDispatch::IntegrationTest
     user = User.create!(name: "User")
 
     get root_url
-    assert :success
+    assert_response :success
 
     assert_equal admin, current_user
     assert_equal admin, true_user
 
     post impersonate_url
-    assert :success
+    assert_response :success
 
     assert_equal user, current_user
     assert_equal admin, true_user
 
     post stop_impersonating_url
-    assert :success
+    assert_response :success
 
     assert_equal admin, current_user
     assert_equal admin, true_user
