@@ -16,11 +16,4 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 2.2"
 
   spec.add_dependency "actionpack", ">= 4.2"
-
-  spec.add_development_dependency "bundler"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "minitest"
-  spec.add_development_dependency "combustion"
-  spec.add_development_dependency "activerecord"
-  spec.add_development_dependency "sqlite3"
 end
