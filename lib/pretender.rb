@@ -24,7 +24,10 @@ module Pretender
 
       # define methods
       if method_defined?(impersonated_method) || private_method_defined?(impersonated_method)
-        alias_method true_method, impersonated_method
+        alias_method 'true_method_bk', impersonated_method
+        define_method true_method do
+          send('true_method_bk') || send(true_scope_method)
+        end
       else
         sc = superclass
         define_method true_method do
