@@ -17,6 +17,10 @@ module Pretender
       impersonated_var = :"@impersonated_#{scope}"
       stop_impersonating_method = :"stop_impersonating_#{scope}"
 
+      #new added methods
+      impersonated_scope_method = :"current_#{scope}"
+      true_scope_method = :"true_scope_#{scope}"
+
       # define methods
       if method_defined?(impersonated_method) || private_method_defined?(impersonated_method)
         alias_method true_method, impersonated_method
@@ -32,7 +36,6 @@ module Pretender
 
       define_method impersonated_method do
         impersonated_resource = instance_variable_get(impersonated_var) if instance_variable_defined?(impersonated_var)
-
         if !impersonated_resource && request.session[session_key]
           # only fetch impersonation if user is logged in
           # this is a safety check (once per request) so
@@ -64,6 +67,39 @@ module Pretender
       define_method stop_impersonating_method do
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
         request.session.delete(session_key)
+      end
+
+      if impersonated_method != impersonated_scope_method
+        if method_defined?(impersonated_scope_method) || private_method_defined?(impersonated_scope_method)
+          alias_method true_scope_method, impersonated_scope_method
+          sc = superclass
+        end
+
+        define_method impersonated_scope_method do
+          impersonated_resource = instance_variable_get(impersonated_var) if instance_variable_defined?(impersonated_var)
+          # if !impersonated_resource && request.session[session_key]
+          if !impersonated_resource && request.session[session_key]
+            # only fetch impersonation if user is logged in
+            # this is a safety check (once per request) so
+            # if a user logs out without session being destroyed
+            # or stop_impersonating_user being called,
+            # we can stop the impersonation
+            if send(true_method)
+              impersonated_resource = impersonate_with.call(request.session[session_key])
+              instance_variable_set(impersonated_var, impersonated_resource) if impersonated_resource
+            else
+              # TODO better message
+              warn "[pretender] Stopping impersonation due to safety check"
+              send(stop_impersonating_method)
+            end
+          end
+          impersonated_resource || send(true_method) || send(true_scope_method)
+
+        end
+
+        define_method "authenticate_impersonated_#{scope}!" do
+          send(impersonated_scope_method) || send("authenticate_#{scope}!")
+        end
       end
     end
   end
