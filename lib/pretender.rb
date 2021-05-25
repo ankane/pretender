@@ -86,11 +86,7 @@ module Pretender
       end
 
       define_method "authenticate_impersonated_#{scope}!" do
-        if impersonated_method != impersonated_scope_method
-          send(impersonated_scope_method)
-        else
-          send("authenticate_#{scope}!")
-        end
+        send(impersonated_scope_method) || send("authenticate_#{scope}!")
       end
     end
   end
