@@ -38,7 +38,7 @@ module Pretender
       # return impersonated_resource
       define_method 'get_impersonated_resource' do
         impersonated_resource = instance_variable_get(impersonated_var) if instance_variable_defined?(impersonated_var)
-        # if !impersonated_resource && request.session[session_key]
+
         if !impersonated_resource && request.session[session_key]
           # only fetch impersonation if user is logged in
           # this is a safety check (once per request) so
