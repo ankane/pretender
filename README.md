@@ -60,7 +60,7 @@ Create a controller
 
 ```ruby
 class UsersController < ApplicationController
-  before_action :require_admin! # your authorization method
+  before_action :require_admin! except: :stop_impersonating # your authorization method
 
   def index
     @users = User.order(:id)
