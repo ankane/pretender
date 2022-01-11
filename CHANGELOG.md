@@ -1,3 +1,7 @@
+## 0.4.0 (unreleased)
+
+- Dropped support for Ruby < 2.6 and Rails < 5.2
+
 ## 0.3.4 (2019-01-31)
 
 - Fixed error with Action Cable and eager loading
