@@ -21,7 +21,7 @@ Works with any authentication system - [Devise](https://github.com/plataformatec
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem 'pretender'
+gem "pretender"
 ```
 
 And add this to your `ApplicationController`:
@@ -180,7 +180,7 @@ Everyone is encouraged to help improve this project. Here are a few ways you can
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
-To get started with development and testing:
+To get started with development:
 
 ```sh
 git clone https://github.com/ankane/pretender.git
