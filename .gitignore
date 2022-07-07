@@ -2,6 +2,7 @@
 *.rbc
 .bundle
 .config
+.tool-versions
 .yardoc
 InstalledFiles
 _yardoc

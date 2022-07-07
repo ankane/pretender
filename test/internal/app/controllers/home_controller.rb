@@ -3,6 +3,12 @@ class HomeController < ActionController::Base
     head :ok
   end
 
+  def setup_session
+    user = User.find_by!(name: "User")
+    request.session[:"impersonated_user_id"] = user.id
+    request.session[:"impersonated_user_klass"] = user.class.to_s
+  end
+
   def impersonate
     impersonate_user(User.find_by!(name: "User"))
     head :ok
