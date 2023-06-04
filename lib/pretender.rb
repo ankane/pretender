@@ -1,5 +1,8 @@
-require "pretender/version"
+# dependencies
 require "active_support"
+
+# modules
+require_relative "pretender/version"
 
 module Pretender
   class Error < StandardError; end
