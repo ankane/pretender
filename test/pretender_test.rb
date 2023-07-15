@@ -15,17 +15,23 @@ class PretenderTest < ActionDispatch::IntegrationTest
     assert_equal admin, current_user
     assert_equal admin, true_user
 
+    refute controller.impersonating_user?
+
     post impersonate_url
     assert_response :success
 
     assert_equal user, current_user
     assert_equal admin, true_user
 
+    assert controller.impersonating_user?
+
     post stop_impersonating_url
     assert_response :success
 
     assert_equal admin, current_user
     assert_equal admin, true_user
+
+    refute controller.impersonating_user?
   end
 
   private

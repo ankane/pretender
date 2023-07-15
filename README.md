@@ -101,7 +101,7 @@ Create an index view
 And show when someone is signed in as another user in your application layout
 
 ```erb
-<% if current_user != true_user %>
+<% if impersonating_user? %>
   You (<%= true_user.name %>) are signed in as <%= current_user.name %>
   <%= link_to "Back to admin", stop_impersonating_users_path, method: :post %>
 <% end %>

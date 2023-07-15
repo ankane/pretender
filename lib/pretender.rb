@@ -64,6 +64,11 @@ module Pretender
         request.session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
       end
 
+      define_method :"impersonating_#{scope}?" do
+        send(true_method) != send(impersonated_method)
+      end
+      helper_method(:"impersonating_#{scope}?") if respond_to?(:helper_method)
+
       define_method stop_impersonating_method do
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
         request.session.delete(session_key)
