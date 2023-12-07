@@ -93,7 +93,7 @@ Create an index view
 ```erb
 <ul>
   <% @users.each do |user| %>
-    <li>Sign in as <%= link_to user.name, impersonate_user_path(user), method: :post %></li>
+    <li>Sign in as <%= button_to user.name, impersonate_user_path(user), data: {turbo: false} %></li>
   <% end %>
 </ul>
 ```
@@ -103,7 +103,7 @@ And show when someone is signed in as another user in your application layout
 ```erb
 <% if current_user != true_user %>
   You (<%= true_user.name %>) are signed in as <%= current_user.name %>
-  <%= link_to "Back to admin", stop_impersonating_users_path, method: :post %>
+  <%= button_to "Back to admin", stop_impersonating_users_path, data: {turbo: false} %>
 <% end %>
 ```
 
