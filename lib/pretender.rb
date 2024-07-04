@@ -1,17 +1,24 @@
+# frozen_string_literal: true
+
 # dependencies
-require "active_support"
+require 'active_support'
 
 # modules
-require_relative "pretender/version"
+require_relative 'pretender/version'
 
 module Pretender
   class Error < StandardError; end
 
+  # Methods related to pretender functionalities
   module Methods
     def impersonates(scope = :user, opts = {})
       impersonated_method = opts[:method] || :"current_#{scope}"
       impersonate_with = opts[:with] || proc { |id|
-        klass = scope.to_s.classify.constantize
+        klass = if opts[:spree]
+                  "Spree::#{scope.to_s.split('_').last.camelize}".constantize
+                else
+                  scope.to_s.classify.constantize
+                end
         primary_key = klass.respond_to?(:primary_key) ? klass.primary_key : :id
         klass.find_by(primary_key => id)
       }
@@ -26,8 +33,12 @@ module Pretender
       else
         sc = superclass
         define_method true_method do
-          # TODO handle private methods
-          raise Pretender::Error, "#{impersonated_method} must be defined before the impersonates method" unless sc.method_defined?(impersonated_method)
+          # TODO: handle private methods
+          unless sc.method_defined?(impersonated_method)
+            raise Pretender::Error,
+                  "#{impersonated_method} must be defined before the impersonates method"
+          end
+
           sc.instance_method(impersonated_method).bind(self).call
         end
       end
@@ -46,8 +57,8 @@ module Pretender
             impersonated_resource = impersonate_with.call(request.session[session_key])
             instance_variable_set(impersonated_var, impersonated_resource) if impersonated_resource
           else
-            # TODO better message
-            warn "[pretender] Stopping impersonation due to safety check"
+            # TODO: better message
+            warn '[pretender] Stopping impersonation due to safety check'
             send(stop_impersonating_method)
           end
         end
@@ -56,8 +67,8 @@ module Pretender
       end
 
       define_method :"impersonate_#{scope}" do |resource|
-        raise ArgumentError, "No resource to impersonate" unless resource
-        raise Pretender::Error, "Must be logged in to impersonate" unless send(true_method)
+        raise ArgumentError, 'No resource to impersonate' unless resource
+        raise Pretender::Error, 'Must be logged in to impersonate' unless send(true_method)
 
         instance_variable_set(impersonated_var, resource)
         # use to_s for Mongoid for BSON::ObjectId

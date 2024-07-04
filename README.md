@@ -32,6 +32,13 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+For Spree add this to your 'ApplicationController':
+...ruby
+class ApplicationController < ActionController::Base
+  impersonates :spree_user, spree: :true
+end
+...
+
 ## How It Works
 
 Sign in as another user with:

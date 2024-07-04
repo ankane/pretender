@@ -36,3 +36,6 @@
 ## 0.2.0 (2016-07-07)
 
 - Started changelog
+
+## 0.2.1 (2024-07-05)
+- Make Compatible with Spree
