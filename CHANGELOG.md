@@ -35,4 +35,20 @@
 
 ## 0.2.0 (2016-07-07)
 
-- Started changelog
+- Fixed error when `current_user` is overridden in `ApplicationController`
+
+## 0.1.0 (2014-06-23)
+
+- Removed need to call `stop_impersonating_user` before signing out
+
+## 0.0.3 (2013-03-09)
+
+- Added security warning
+
+## 0.0.2 (2013-03-09)
+
+- Ensure user is logged in
+
+## 0.0.1 (2013-03-05)
+
+- First release
