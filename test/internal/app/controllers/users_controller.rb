@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  impersonates :user
-
   def index
     head :ok
   end
