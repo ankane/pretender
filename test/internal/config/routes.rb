@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root "home#index"
-  post "impersonate" => "home#impersonate"
-  post "stop_impersonating" => "home#stop_impersonating"
+  resources :users, only: [:index] do
+    post :impersonate, on: :member
+    post :stop_impersonating, on: :collection
+  end
 end
