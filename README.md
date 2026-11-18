@@ -148,7 +148,8 @@ Pretender is super flexible. You can change the names of methods and even impers
 ```ruby
 impersonates :user,
              method: :current_user,
-             with: ->(id) { User.find_by(id: id) }
+             with: ->(id) { User.find_by(id: id) },
+             store: :session
 ```
 
 Mold it to fit your application.
@@ -166,6 +167,14 @@ true_account
 impersonate_account
 stop_impersonating_account
 ```
+
+To store the impersonated user in an encrypted cookie instead of the session, use:
+
+```ruby
+impersonates :user, store: :cookie
+```
+
+Requests from other tabs write the session back when they finish, which can undo `impersonate_user` or `stop_impersonating_user` if they started before it. The cookie is only set by those two methods.
 
 ## History
 

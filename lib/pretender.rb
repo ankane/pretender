@@ -19,6 +19,8 @@ module Pretender
       session_key = :"impersonated_#{scope}_id"
       impersonated_var = :"@impersonated_#{scope}"
       stop_impersonating_method = :"stop_impersonating_#{scope}"
+      store = opts[:store] || :session
+      raise ArgumentError, "Unknown store: #{store}" unless [:session, :cookie].include?(store)
 
       # define methods
       if method_defined?(impersonated_method) || private_method_defined?(impersonated_method)
@@ -36,14 +38,18 @@ module Pretender
       define_method impersonated_method do
         impersonated_resource = instance_variable_get(impersonated_var) if instance_variable_defined?(impersonated_var)
 
-        if !impersonated_resource && request.session[session_key]
+        # the cookie also holds the true resource id, so it does not carry over to the next sign in
+        true_id, impersonated_id = store == :cookie ? cookies.encrypted[session_key] : [nil, request.session[session_key]]
+
+        if !impersonated_resource && impersonated_id
           # only fetch impersonation if user is logged in
           # this is a safety check (once per request) so
           # if a user logs out without session being destroyed
           # or stop_impersonating_user being called,
           # we can stop the impersonation
-          if send(true_method)
-            impersonated_resource = impersonate_with.call(request.session[session_key])
+          true_resource = send(true_method)
+          if true_resource && (store == :session || true_id == true_resource.id.to_s)
+            impersonated_resource = impersonate_with.call(impersonated_id)
             instance_variable_set(impersonated_var, impersonated_resource) if impersonated_resource
           else
             # TODO better message
@@ -61,12 +67,17 @@ module Pretender
 
         instance_variable_set(impersonated_var, resource)
         # use to_s for Mongoid for BSON::ObjectId
-        request.session[session_key] = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
+        id = resource.id.is_a?(Numeric) ? resource.id : resource.id.to_s
+        if store == :cookie
+          cookies.encrypted[session_key] = {value: [send(true_method).id.to_s, id], httponly: true}
+        else
+          request.session[session_key] = id
+        end
       end
 
       define_method stop_impersonating_method do
         remove_instance_variable(impersonated_var) if instance_variable_defined?(impersonated_var)
-        request.session.delete(session_key)
+        store == :cookie ? cookies.delete(session_key) : request.session.delete(session_key)
       end
     end
   end
