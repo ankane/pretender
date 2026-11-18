@@ -1,3 +1,7 @@
+## 1.1.0 (unreleased)
+
+- Added `store` option
+
 ## 1.0.0 (2026-04-01)
 
 - Dropped support for Ruby < 3.3 and Rails < 7.2
